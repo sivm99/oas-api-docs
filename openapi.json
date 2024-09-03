@@ -1,0 +1,980 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "One Alias Service API Docs",
+    "version": "1.0.0.31.8",
+    "description": "`REST API` built for managing email routing rules on Cloudflare with **multi-user support**. Each user can have their own `destinations`, `aliases`, and `rules`. Custom domain* setup within user is also possible but hasn't been implemented yet.\n\n| ![API Endpoints Auth](https://cdn.jsdelivr.net/gh/thanksduck/mr@main/oas-api-endpoints-auth.svg) | ![API Endpoints User](https://cdn.jsdelivr.net/gh/thanksduck/mr@main/oas-api-endpoints-user.svg) |\n|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|\n| **API Endpoints Auth**                                                                           | **API Endpoints User**                                                                           |\n\n| ![API Endpoints Mail](https://cdn.jsdelivr.net/gh/thanksduck/mr@main/oas-api-endpoints-mail-rule.svg) | ![API Endpoints Destination](https://cdn.jsdelivr.net/gh/thanksduck/mr@main/oas-api-endpoints-destination.svg) |\n|:---------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|\n| **API Endpoints Mail**                                                                               | **API Endpoints Destination**                                                                                  |",
+    "termsOfService": "https://ms.20032003.xyz/terms",
+    "contact": {
+      "name": "Shivam Shuklla",
+      "url": "https://shivam.20032003.xyz",
+      "email": "shivam@20032003.xyz"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://oas.20032003.xyz/api/v1"
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Signup a user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Thanks Duck"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "thanksduck@20032003.xyz"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66d5c9cb82a4934a3ff2669c"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "readme"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Readme"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "readme@mail.com"
+                            },
+                            "alias": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "aliasCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "destination": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "destinationCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "__v": {
+                              "type": "integer",
+                              "example": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login a user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "password"
+                ],
+                "anyOf": [
+                  {
+                    "required": [
+                      "username"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "email"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66d5c9cb82a4934a3ff2669c"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "readme"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Readme"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "readme@mail.com"
+                            },
+                            "alias": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "aliasCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "destination": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "destinationCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "__v": {
+                              "type": "integer",
+                              "example": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/forget-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Forgot password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "anyOf": [
+                  {
+                    "required": [
+                      "email"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "username"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset link sent"
+          }
+        }
+      }
+    },
+    "/auth/reset-password/{token}": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset password",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "confirmPassword": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "password",
+                  "confirmPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successfully"
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user details",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66d5c9cb82a4934a3ff2669c"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "readme"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Readme"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "readme@mail.com"
+                            },
+                            "alias": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "aliasCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "destination": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "destinationCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "__v": {
+                              "type": "integer",
+                              "example": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{username}/rules": {
+      "get": {
+        "summary": "Get user rules",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66d7156bcfbc7694f27f910a"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "api-docs"
+                            },
+                            "alias": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "aliasCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "destination": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "destinationCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "rules": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "rulesCount": {
+                              "type": "integer",
+                              "example": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{username}/update-password": {
+      "patch": {
+        "summary": "Update user password",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "currentPassword": {
+                    "type": "string"
+                  },
+                  "newPassword": {
+                    "type": "string"
+                  },
+                  "newPasswordConfirm": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "currentPassword",
+                  "newPassword",
+                  "newPasswordConfirm"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password Has been Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66d5c9cb82a4934a3ff2669c"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "readme"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Readme"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "readme@mail.com"
+                            },
+                            "alias": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "aliasCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "destination": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "destinationCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "__v": {
+                              "type": "integer",
+                              "example": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{username}/update": {
+      "patch": {
+        "summary": "Update user details",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "anyOf": [
+                  {
+                    "required": [
+                      "username"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "email"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "name"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66d5c9cb82a4934a3ff2669c"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "readme"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Readme"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "readme@mail.com"
+                            },
+                            "alias": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "aliasCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "destination": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "destinationCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "__v": {
+                              "type": "integer",
+                              "example": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{username}/delete": {
+      "delete": {
+        "summary": "Delete user account",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User account deleted"
+          }
+        }
+      }
+    },
+    "/mail/rule": {
+      "post": {
+        "summary": "Create a mail rule",
+        "tags": [
+          "Mail"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alias": {
+                    "type": "string"
+                  },
+                  "destination": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "alias",
+                  "destination",
+                  "username"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Mail rule created"
+          }
+        }
+      }
+    },
+    "/mail/rule/{rule-id}": {
+      "get": {
+        "summary": "Get mail rule by ID",
+        "tags": [
+          "Mail"
+        ],
+        "parameters": [
+          {
+            "name": "rule-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mail rule details"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update mail rule by ID",
+        "tags": [
+          "Mail"
+        ],
+        "parameters": [
+          {
+            "name": "rule-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mail rule updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete mail rule by ID",
+        "tags": [
+          "Mail"
+        ],
+        "parameters": [
+          {
+            "name": "rule-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mail rule deleted"
+          }
+        }
+      }
+    },
+    "/mail/destination": {
+      "post": {
+        "summary": "Create a mail destination",
+        "tags": [
+          "Mail"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "destination": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "destination"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Mail destination created"
+          }
+        }
+      },
+      "get": {
+        "summary": "List all mail destinations",
+        "tags": [
+          "Mail"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of mail destinations"
+          }
+        }
+      }
+    },
+    "/mail/destination/{id}/verify": {
+      "get": {
+        "summary": "Verify mail destination by ID",
+        "tags": [
+          "Mail"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mail destination verified"
+          }
+        }
+      }
+    },
+    "/mail/destination/{id}": {
+      "delete": {
+        "summary": "Delete mail destination by ID",
+        "tags": [
+          "Mail"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mail destination deleted"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Endpoints related to authentication"
+    },
+    {
+      "name": "User",
+      "description": "Endpoints related to user management"
+    },
+    {
+      "name": "Mail",
+      "description": "Endpoints related to mail rules and destinations"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
